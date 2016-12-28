@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>N7z</id>
+    <version>0.0.1</version>
+    <title>[ N7z ] 7-Zip file archiver for .NET (C#)</title>
+    <authors>github.com/3F/N7z</authors>
+    <owners>reg</owners>
+    <licenseUrl>https://github.com/3F/N7z/blob/master/License.txt</licenseUrl>
+    <projectUrl>https://github.com/3F/N7z</projectUrl>
+    <!-- <iconUrl>https://raw.githubusercontent.com/3F/N7z/master/</iconUrl> -->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+    
+        N7z - 7-Zip file archiver for .NET (C#)
+        _ _ _ _ _ _
+        Source code and all details here: https://github.com/3F/N7z
+        
+        ~~~~~~~~
+        Get it via GetNuTool:
+        ==========================================
+        gnt /p:ngpackages="N7z/0.0.1"
+        ==========================================
+        * https://github.com/3F/GetNuTool
+        
+    </description>
+    <summary>N7z - 7-Zip file archiver for .NET (C#) :: Source code: https://github.com/3F/N7z</summary>
+    <tags>7z 7zip API N7z dll Conari</tags>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright (c) 2016  Denis Kuzmin [entry.reg@gmail.com]</copyright>
+    <references>
+      <!-- <reference file="Conari.dll" />   Optional via GetNuTool etc. -->
+      <reference file="N7z.dll" />
+    </references>
+    <dependencies>
+        <dependency id="Conari" version="(1.3.0,)" />
+    </dependencies>
+  </metadata>
+</package>

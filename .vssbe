@@ -1,0 +1,382 @@
+﻿{
+  "Header": {
+    "_": [
+      " This requires vsSolutionBuildEvent engine.",
+      " Free plugin for Visual Studio or MSBuild Tools:",
+      "  * https://github.com/3F/vsSolutionBuildEvent",
+      "  * https://visualstudiogallery.msdn.microsoft.com/0d1dbfd7-ed8a-40af-ae39-281bfeca2334/",
+      " Feedback: github.com/3F  or entry.reg@gmail.com"
+    ],
+    "Compatibility": "0.9"
+  },
+  "Components": [
+    {
+      "ClassName": "InternalComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "UserVariableComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "TryComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "OWPComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "NuGetComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "FunctionComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "FileComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "DTEComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "BuildComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "BoxComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "SevenZipComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "ConditionComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "MSBuildComponent",
+      "Enabled": true
+    },
+    {
+      "ClassName": "CommentComponent",
+      "Enabled": true
+    }
+  ],
+  "PreBuild": [
+    {
+      "Enabled": true,
+      "Name": "ActDir",
+      "Caption": "Prepare output directory",
+      "SupportMSBuild": true,
+      "SupportSBEScripts": true,
+      "IgnoreIfBuildFailed": false,
+      "BuildType": "Common",
+      "Confirmation": false,
+      "ToConfiguration": [],
+      "ExecutionOrder": {
+        "$type": "net.r_eg.vsSBE.Events.ExecutionOrder[], vsSolutionBuildEvent",
+        "$values": []
+      },
+      "Process": {
+        "$type": "net.r_eg.vsSBE.Events.EventProcess, vsSolutionBuildEvent",
+        "Waiting": true,
+        "Hidden": true,
+        "TimeLimit": 30
+      },
+      "Mode": {
+        "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
+        "Type": "Script",
+        "Command": "#[$(dbin    = \"bin/$(Configuration)/\")]\n$(netstamp  = $(TargetFrameworkVersion.Replace('v', '').Replace('.', '')))\n\n$(pN7z = \"N7z\")\n$(odir      = \"$(dbin)raw/\")\n\n#[IO delete.directory(\"$(dbin)\", true)]\n#[IO copy.directory(\"\", \"$(dbin)\", true)]",
+        "Command__": [
+          "#[$(dbin    = \"bin/$(Configuration)/\")]",
+          "$(netstamp  = $(TargetFrameworkVersion.Replace('v', '').Replace('.', '')))",
+          "",
+          "$(pN7z = \"N7z\")",
+          "$(odir      = \"$(dbin)raw/\")",
+          "",
+          "#[IO delete.directory(\"$(dbin)\", true)]",
+          "#[IO copy.directory(\"\", \"$(dbin)\", true)]"
+        ]
+      }
+    },
+    {
+      "Enabled": true,
+      "Name": "ActVer",
+      "Caption": "Update version number 'as is' - TODO: ",
+      "SupportMSBuild": true,
+      "SupportSBEScripts": true,
+      "IgnoreIfBuildFailed": false,
+      "BuildType": "Common",
+      "Confirmation": false,
+      "ToConfiguration": [],
+      "ExecutionOrder": {
+        "$type": "net.r_eg.vsSBE.Events.ExecutionOrder[], vsSolutionBuildEvent",
+        "$values": []
+      },
+      "Process": {
+        "$type": "net.r_eg.vsSBE.Events.EventProcess, vsSolutionBuildEvent",
+        "Waiting": true,
+        "Hidden": true,
+        "TimeLimit": 30
+      },
+      "Mode": {
+        "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
+        "Type": "Script",
+        "Command": "#[var pVer = #[File get(\".version\")]]\n\n#[IO replace.Regexp(\"$(pN7z)/N7zVersion.cs\", \"(S_NUM\\s+=).+?\\\";\", \"$1 \\\"$(pVer)\\\";\")]\n\n#[IO replace.Regexp(\"N7z.nuspec\", \"<version>.+?</version>\", \"<version>$(pVer)</version>\")]\n#[IO replace.Regexp(\"N7z.nuspec\", \"\\\"N7z/[0-9.]+\\\"\", \"\\\"N7z/$(pVer)\\\"\")]",
+        "Command__": [
+          "#[var pVer = #[File get(\".version\")]]",
+          "",
+          "#[IO replace.Regexp(\"$(pN7z)/N7zVersion.cs\", \"(S_NUM\\s+=).+?\\\";\", \"$1 \\\"$(pVer)\\\";\")]",
+          "",
+          "#[IO replace.Regexp(\"N7z.nuspec\", \"<version>.+?</version>\", \"<version>$(pVer)</version>\")]",
+          "#[IO replace.Regexp(\"N7z.nuspec\", \"\\\"N7z/[0-9.]+\\\"\", \"\\\"N7z/$(pVer)\\\"\")]"
+        ]
+      }
+    }
+  ],
+  "PostBuild": [
+    {
+      "Enabled": true,
+      "Name": "ActBinaries",
+      "Caption": "Binaries & tools ...",
+      "SupportMSBuild": true,
+      "SupportSBEScripts": true,
+      "IgnoreIfBuildFailed": true,
+      "BuildType": "Common",
+      "Confirmation": false,
+      "ToConfiguration": [],
+      "ExecutionOrder": {
+        "$type": "net.r_eg.vsSBE.Events.ExecutionOrder[], vsSolutionBuildEvent",
+        "$values": []
+      },
+      "Process": {
+        "$type": "net.r_eg.vsSBE.Events.EventProcess, vsSolutionBuildEvent",
+        "Waiting": true,
+        "Hidden": true,
+        "TimeLimit": 30
+      },
+      "Mode": {
+        "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
+        "Type": "Script",
+        "Command": "[IO copy.file(\n            \"$(SolutionDir)tools/*.*\", \n            \"$(odir)/tools/\", \n            true, \n            {\"*.nuspec\"})]\n            \n#[IO copy.file(\"N7z.nuspec\", \"$(odir)/N7z.nuspec\", true)]\n#[IO copy.file(\"$(pN7z)/$(OutDir:$(pN7z))/*.*\", \n               \"$(odir)/lib/net$(netstamp)/\", true)]\n\n#[IO copy.file(\"License.txt\", \"$(odir)/\", true)]\n#[IO copy.file(\"Readme.md\", \"$(odir)/\", true)]\n#[IO copy.file(\"changelog.txt\", \"$(odir)/\", true)]",
+        "Command__": [
+          "[IO copy.file(",
+          "            \"$(SolutionDir)tools/*.*\", ",
+          "            \"$(odir)/tools/\", ",
+          "            true, ",
+          "            {\"*.nuspec\"})]",
+          "            ",
+          "#[IO copy.file(\"N7z.nuspec\", \"$(odir)/N7z.nuspec\", true)]",
+          "#[IO copy.file(\"$(pN7z)/$(OutDir:$(pN7z))/*.*\", ",
+          "               \"$(odir)/lib/net$(netstamp)/\", true)]",
+          "",
+          "#[IO copy.file(\"License.txt\", \"$(odir)/\", true)]",
+          "#[IO copy.file(\"Readme.md\", \"$(odir)/\", true)]",
+          "#[IO copy.file(\"changelog.txt\", \"$(odir)/\", true)]"
+        ]
+      }
+    },
+    {
+      "Enabled": true,
+      "Name": "ActPack",
+      "Caption": "Packing with GetNuTool ...",
+      "SupportMSBuild": true,
+      "SupportSBEScripts": true,
+      "IgnoreIfBuildFailed": true,
+      "BuildType": "Common",
+      "Confirmation": false,
+      "ToConfiguration": [],
+      "ExecutionOrder": {
+        "$type": "net.r_eg.vsSBE.Events.ExecutionOrder[], vsSolutionBuildEvent",
+        "$values": []
+      },
+      "Process": {
+        "$type": "net.r_eg.vsSBE.Events.EventProcess, vsSolutionBuildEvent",
+        "Waiting": true,
+        "Hidden": true,
+        "TimeLimit": 30
+      },
+      "Mode": {
+        "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
+        "Type": "Script",
+        "Command": "#[NuGet gnt.raw(\"/t:pack /p:ngin=\\\"$(odir)\\\" /p:ngout=\\\"$(dbin)\\\"\")]",
+        "Command__": [
+          "#[NuGet gnt.raw(\"/t:pack /p:ngin=\\\"$(odir)\\\" /p:ngout=\\\"$(dbin)\\\"\")]"
+        ]
+      }
+    },
+    {
+      "Enabled": true,
+      "Name": "Distributives",
+      "Caption": "zip archives etc.",
+      "SupportMSBuild": true,
+      "SupportSBEScripts": true,
+      "IgnoreIfBuildFailed": true,
+      "BuildType": "Common",
+      "Confirmation": false,
+      "ToConfiguration": [],
+      "ExecutionOrder": {
+        "$type": "net.r_eg.vsSBE.Events.ExecutionOrder[], vsSolutionBuildEvent",
+        "$values": []
+      },
+      "Process": {
+        "$type": "net.r_eg.vsSBE.Events.EventProcess, vsSolutionBuildEvent",
+        "Waiting": true,
+        "Hidden": true,
+        "TimeLimit": 30
+      },
+      "Mode": {
+        "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
+        "Type": "Script",
+        "Command": "#[7z pack.files({ \n        \"$(odir)\\\\lib\\\\net$(netstamp)\\\\*.*\",\n        \"$(odir)\\\\*.*\"\n    }, \n    \"$(dbin)\\\\N7z_v$(pVer).zip\", \n    { \"$(odir)\\\\*.nuspec\" })]",
+        "Command__": [
+          "#[7z pack.files({ ",
+          "        \"$(odir)\\\\lib\\\\net$(netstamp)\\\\*.*\",",
+          "        \"$(odir)\\\\*.*\"",
+          "    }, ",
+          "    \"$(dbin)\\\\N7z_v$(pVer).zip\", ",
+          "    { \"$(odir)\\\\*.nuspec\" })]"
+        ]
+      }
+    }
+  ],
+  "CancelBuild": [],
+  "WarningsBuild": [],
+  "ErrorsBuild": [],
+  "OWPBuild": [],
+  "Transmitter": [],
+  "CommandEvent": [],
+  "Logging": [],
+  "SlnOpened": [
+    {
+      "Enabled": false,
+      "Name": "ActReload",
+      "Caption": "[obsolete] Reload projects in solution after adding submodules",
+      "SupportMSBuild": true,
+      "SupportSBEScripts": true,
+      "IgnoreIfBuildFailed": false,
+      "BuildType": "Common",
+      "Confirmation": false,
+      "ToConfiguration": [],
+      "ExecutionOrder": {
+        "$type": "net.r_eg.vsSBE.Events.ExecutionOrder[], vsSolutionBuildEvent",
+        "$values": []
+      },
+      "Process": {
+        "$type": "net.r_eg.vsSBE.Events.EventProcess, vsSolutionBuildEvent",
+        "Waiting": false,
+        "Hidden": true,
+        "TimeLimit": 30
+      },
+      "Mode": {
+        "$type": "net.r_eg.vsSBE.Events.ModeCSharp, vsSolutionBuildEvent",
+        "Type": "CSharp",
+        "References": [
+          "System",
+          "Microsoft.VisualStudio.Shell.Interop.10.0",
+          "Microsoft.VisualStudio.Shell.Interop",
+          "Microsoft.VisualStudio.Shell.10.0",
+          "Microsoft.VisualStudio.Shell.Interop.9.0",
+          "Microsoft.VisualStudio.Shell.Interop.8.0",
+          "Microsoft.VisualStudio.OLE.Interop"
+        ],
+        "SmartReferences": true,
+        "GenerateInMemory": true,
+        "TreatWarningsAsErrors": false,
+        "WarningLevel": 4,
+        "FilesMode": false,
+        "CachingBytecode": false,
+        "LastTime": 0,
+        "Command": "//#[($(ProjectDir:Conari) == \"*Undefined*\" && ( $(BuildingInsideVisualStudio) || $(VSIDE) || $(DevEnvDir) != \"*Undefined*\") ) {\n\nusing System;\nusing Microsoft.VisualStudio;\nusing Microsoft.VisualStudio.Shell.Interop;\nusing ICommand = net.r_eg.vsSBE.Actions.ICommand;\nusing ISolutionEvent = net.r_eg.vsSBE.Events.ISolutionEvent;\n\nnamespace vsSolutionBuildEvent\n{\n    public class CSharpMode\n    {\n        public static int Init(ICommand cmd, ISolutionEvent evt)\n        {\n            System.Diagnostics.Process.Start(@\"$(SolutionDir)submodules.bat\").WaitForExit();\n\n            object service      = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(IVsSolution));\n            IVsSolution sln     = (IVsSolution)service;\n            IVsSolution4 sln4   = (IVsSolution4)service;\n\n            IEnumHierarchies projects;\n            Guid gtype = Guid.Empty;\n            if(ErrorHandler.Failed(sln.GetProjectEnum((int)__VSENUMPROJFLAGS.EPF_UNLOADEDINSOLUTION  /*EPF_ALLPROJECTS*/, ref gtype, out projects))) {\n                return 0;\n            }\n\n            var phr = new IVsHierarchy[1];\n            uint count;\n            while((projects.Next((uint)phr.Length, phr, out count) == VSConstants.S_OK) && (count > 0))\n            {\n                Guid pGuid;\n                if(ErrorHandler.Failed(sln.GetGuidOfProject(phr[0], out pGuid))) {\n                    continue;\n                }\n                sln4.EnsureProjectIsLoaded(ref pGuid, (uint)__VSBSLFLAGS.VSBSLFLAGS_None);\n            }\n            \n            return 0;\n        }\n    }\n}\n\n//}]",
+        "Command__": [
+          "//#[($(ProjectDir:Conari) == \"*Undefined*\" && ( $(BuildingInsideVisualStudio) || $(VSIDE) || $(DevEnvDir) != \"*Undefined*\") ) {",
+          "",
+          "using System;",
+          "using Microsoft.VisualStudio;",
+          "using Microsoft.VisualStudio.Shell.Interop;",
+          "using ICommand = net.r_eg.vsSBE.Actions.ICommand;",
+          "using ISolutionEvent = net.r_eg.vsSBE.Events.ISolutionEvent;",
+          "",
+          "namespace vsSolutionBuildEvent",
+          "{",
+          "    public class CSharpMode",
+          "    {",
+          "        public static int Init(ICommand cmd, ISolutionEvent evt)",
+          "        {",
+          "            System.Diagnostics.Process.Start(@\"$(SolutionDir)submodules.bat\").WaitForExit();",
+          "",
+          "            object service      = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(IVsSolution));",
+          "            IVsSolution sln     = (IVsSolution)service;",
+          "            IVsSolution4 sln4   = (IVsSolution4)service;",
+          "",
+          "            IEnumHierarchies projects;",
+          "            Guid gtype = Guid.Empty;",
+          "            if(ErrorHandler.Failed(sln.GetProjectEnum((int)__VSENUMPROJFLAGS.EPF_UNLOADEDINSOLUTION  /*EPF_ALLPROJECTS*/, ref gtype, out projects))) {",
+          "                return 0;",
+          "            }",
+          "",
+          "            var phr = new IVsHierarchy[1];",
+          "            uint count;",
+          "            while((projects.Next((uint)phr.Length, phr, out count) == VSConstants.S_OK) && (count > 0))",
+          "            {",
+          "                Guid pGuid;",
+          "                if(ErrorHandler.Failed(sln.GetGuidOfProject(phr[0], out pGuid))) {",
+          "                    continue;",
+          "                }",
+          "                sln4.EnsureProjectIsLoaded(ref pGuid, (uint)__VSBSLFLAGS.VSBSLFLAGS_None);",
+          "            }",
+          "            ",
+          "            return 0;",
+          "        }",
+          "    }",
+          "}",
+          "",
+          "//}]"
+        ]
+      }
+    },
+    {
+      "Enabled": true,
+      "Name": "ModernReload",
+      "Caption": "v0.12.8+: Reload projects in solution after adding git submodules",
+      "SupportMSBuild": true,
+      "SupportSBEScripts": true,
+      "IgnoreIfBuildFailed": false,
+      "BuildType": "Before",
+      "Confirmation": false,
+      "ToConfiguration": [],
+      "ExecutionOrder": {
+        "$type": "net.r_eg.vsSBE.Events.ExecutionOrder[], vsSolutionBuildEvent",
+        "$values": []
+      },
+      "Process": {
+        "$type": "net.r_eg.vsSBE.Events.EventProcess, vsSolutionBuildEvent",
+        "Waiting": true,
+        "Hidden": true,
+        "TimeLimit": 30
+      },
+      "Mode": {
+        "$type": "net.r_eg.vsSBE.Events.ModeScript, vsSolutionBuildEvent",
+        "Type": "Script",
+        "Command": "#[$(moduleConari = \"Conari/Conari.sln\")]\n\n#[( #[IO exists.file(\"$(moduleConari)\")] )\n{ \n    #[File scall(\"submodules.bat\", \"$(moduleConari)\", 400)]\n}\nelse{\n    #[File call(\"submodules.bat\", \"$(moduleConari)\", 2000)]\n}]",
+        "Command__": [
+          "#[$(moduleConari = \"Conari/Conari.sln\")]",
+          "",
+          "#[( #[IO exists.file(\"$(moduleConari)\")] )",
+          "{ ",
+          "    #[File scall(\"submodules.bat\", \"$(moduleConari)\", 400)]",
+          "}",
+          "else{",
+          "    #[File call(\"submodules.bat\", \"$(moduleConari)\", 2000)]",
+          "}]"
+        ]
+      }
+    }
+  ],
+  "SlnClosed": []
+}
